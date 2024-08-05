@@ -14,6 +14,16 @@
 
 ### version 1.1
 
+<pre>qoshimcha tolov olish uchun buyruqlar (suv, yegulik, fast food va h.k)</pre>
+<pre>Yopilish vaqtini qolda ozgaritish imkoniyadi</pre>
 <pre>Kunlik foyda qoshish</pre>
 <pre>Playstation ni yopish tugmasi (kun toxtatish)</pre>
-<pre>Oylik resultat olish (shu kuni shuncha foyda, shuncha kleint), Bu oyda shuncha foyda boldi..</pre>
+<pre>Oylik result olish (2024-7 da foyda 112312312, kunlar: x)</pre>
+
+### version 1.3
+
+<pre>
+    Oylik result ustiga bosilsa har bir kunni teskari tartibda (3,2,1) resultat chiqarib berish, bosilmasa umumiy 1 oylikni korsatish
+</pre>
+
+### version 2

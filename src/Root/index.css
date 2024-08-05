@@ -102,3 +102,37 @@ button:hover {
 button:active {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+.middleBig {
+  width: 110px;
+  margin: 5px;
+}
+
+.bigButton {
+  width: 100%;
+  margin: 10px auto;
+}
+
+/* Withdrawals and MonthlyResults common styles */
+.results {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  background-color: var(--back2);
+}
+
+.results h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.results li {
+  margin-bottom: 5px;
+}

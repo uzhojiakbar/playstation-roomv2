@@ -1,10 +1,10 @@
-// src/Root.js
 import React from "react";
 import "./index.css";
 import Rooms from "../Components/Rooms";
 import Controller from "../Components/Controller";
-import Withdrawals from "../Components/Ayrish";
 import useLocalStorage from "../hooks/useLocalStorage";
+import MonthlyResults from "../Components/MonthlyResults/MonthlyResults.jsx";
+import Withdrawals from "../Components/Ayrish/index.jsx";
 
 const Root = () => {
   const {
@@ -23,30 +23,26 @@ const Root = () => {
       <div className="center">
         <div className="title">
           <div>
-            Kunlik Foyda: <u>{stats.today} so`m</u>
+            Kunlik Foyda: <u>{stats.today} som</u>
           </div>
           <div>
             Bugun Klientlar: <u>{stats.todayClient} ta</u>
           </div>
         </div>
       </div>
-      <button onClick={closeDay}>Kunni Yopish</button>
       <Controller onUpdateStats={updateStats} />
       <Rooms onUpdateStats={updateStats} />
       <Controller type={0} onUpdateStats={updateStats} />
+      <div className="center">
+        <button className="bigButton" onClick={closeDay}>
+          Kunni Yopish
+        </button>
+      </div>
       <Withdrawals
         withdrawals={withdrawals}
         onUpdateWithdrawals={updateWithdrawals}
       />
-      <div>
-        <h3>Oylik Natijalar</h3>
-        {Object.entries(monthlyResults).map(([key, value]) => (
-          <div key={key}>
-            <strong>{key}</strong>: Foyda: {value.profit} so'm, Kunlar:{" "}
-            {value.days}
-          </div>
-        ))}
-      </div>
+      <MonthlyResults monthlyResults={monthlyResults} />
     </div>
   );
 };
