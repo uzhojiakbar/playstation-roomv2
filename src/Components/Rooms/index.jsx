@@ -1,3 +1,4 @@
+// src/Components/Rooms.js
 import React, { useState } from "react";
 import { Room, RoomsCon } from "./style";
 
@@ -22,7 +23,6 @@ const Rooms = ({ onUpdateStats }) => {
     );
     setRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
-    // Update stats after VIP is set
     onUpdateStats();
   };
 
@@ -39,50 +39,32 @@ const Rooms = ({ onUpdateStats }) => {
   const handlePayment = (id) => {
     const updatedRooms = rooms.map((room) => {
       if (room.id === id) {
-        // Tekshiruv: open va close mavjudligini tekshirish
         if (!room.open || !room.close) {
           console.error("Room open or close time is missing.");
-          return room; // Agar vaqt mavjud bo'lmasa, xona holatini o'zgartirmaslik
+          return room;
         }
 
-        console.log("Room open:", room.open);
-        console.log("Room close:", room.close);
-
-        // Vaqtni to'g'ri olish
         const openTime = new Date();
         openTime.setHours(room.open[0], room.open[1], 0, 0);
 
         const closeTime = new Date();
         closeTime.setHours(room.close[0], room.close[1], 0, 0);
 
-        console.log("Open time:", openTime);
-        console.log("Close time:", closeTime);
-
-        // Hisoblash
         const diffInMinutes = (closeTime - openTime) / 60000;
         const diffInHours = diffInMinutes / 60;
 
-        // `pricePerHour` qiymatini olish
         const pricePerHour = parseFloat(localStorage.getItem(room.type)) || 0;
-        console.log("Price per hour:", pricePerHour);
-
-        // Agar narx bo'lsa, to'liq narxni hisoblash
         const totalPrice = diffInHours * pricePerHour;
-        console.log("Total price:", totalPrice);
 
-        // Statistikalarni yangilash
         const today = JSON.parse(localStorage.getItem("today")) || 0;
         localStorage.setItem("today", JSON.stringify(today + totalPrice));
 
-        // Klientlar sonini oshirish
         const todayClient =
           JSON.parse(localStorage.getItem("todayClient")) || 0;
         localStorage.setItem("todayClient", JSON.stringify(todayClient + 1));
 
-        // Statistikalarni yangilash
         onUpdateStats();
 
-        // Xonani yangilash
         return { ...room, open: false, close: false };
       }
       return room;
@@ -111,7 +93,6 @@ const Rooms = ({ onUpdateStats }) => {
     });
     setRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
-    // Update stats after time addition
     onUpdateStats();
   };
 

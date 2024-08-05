@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// src/Components/Controller.js
+import React, { useState, useEffect } from "react";
 import { CtrlDesign } from "./style";
 
 const Controller = ({ type, onUpdateStats }) => {
@@ -10,7 +11,7 @@ const Controller = ({ type, onUpdateStats }) => {
   const [summa, setSumma] = useState("");
   const [tavsiy, setTavsiy] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isEditing) {
       localStorage.setItem("oddiy", price.oddiy);
       localStorage.setItem("pro", price.pro);

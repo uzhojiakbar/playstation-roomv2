@@ -1,5 +1,4 @@
 // src/Components/Ayrish.js
-
 import React, { useEffect } from "react";
 import { WithdrawalsCon, WithdrawalItem } from "./style";
 
