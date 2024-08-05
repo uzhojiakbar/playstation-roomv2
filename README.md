@@ -1,8 +1,19 @@
-# React + Vite
+# Playstation Room (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Author: Murodillayev Hojiakbar (t.me/anonim_opisis)
 
-Currently, two official plugins are available:
+### version 1.0 (tayyor, qollinyotgan versiya)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<pre>USING ONLY LOCAL STORAGE</pre>
+
+<pre>Default 5 ta xona</pre>
+<pre>VIP vaqt ochish, 1 soat yoki yarm saot vaqt ochish</pre>
+<pre>Xonalarni pulini sozlash (oddiy va pro xona)</pre>
+<pre>Umumiy foyda va clientlar soni</pre>
+<pre>Foydadan pul ajratish va barcha ajratilgan pullarni jadvali (sanasi-soati, tavsifi, qancha ekanligi)</pre>
+
+### version 1.1
+
+<pre>Kunlik foyda qoshish</pre>
+<pre>Playstation ni yopish tugmasi (kun toxtatish)</pre>
+<pre>Oylik resultat olish (shu kuni shuncha foyda, shuncha kleint), Bu oyda shuncha foyda boldi..</pre>
