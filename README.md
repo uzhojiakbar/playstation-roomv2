@@ -20,7 +20,7 @@
 <pre>Playstation ni yopish tugmasi (kun toxtatish)</pre>
 <pre>Oylik result olish (2024-7 da foyda 112312312, kunlar: x)</pre>
 
-### version 1.3
+### version 1.2
 
 <pre>
     Oylik result ustiga bosilsa har bir kunni teskari tartibda (3,2,1) resultat chiqarib berish, bosilmasa umumiy 1 oylikni korsatish
