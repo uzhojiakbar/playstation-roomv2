@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+// src/hooks/useLocalStorage.js
+import { useState, useEffect, useCallback } from "react";
 
 const useLocalStorage = () => {
   const [stats, setStats] = useState({
@@ -67,18 +68,62 @@ const useLocalStorage = () => {
     initializeData();
   }, []);
 
-  const updateStats = () => {
+  const updateStats = useCallback(() => {
     setStats({
       today: JSON.parse(localStorage.getItem("today")) || 0,
       todayClient: JSON.parse(localStorage.getItem("todayClient")) || 0,
     });
-  };
+  }, []);
 
-  const updateWithdrawals = () => {
+  const updateWithdrawals = useCallback(() => {
     setWithdrawals(JSON.parse(localStorage.getItem("withdrawals")) || []);
-  };
+  }, []);
 
-  return { stats, updateStats, withdrawals, updateWithdrawals };
+  const addDailyProfit = useCallback((amount) => {
+    const dailyProfits = JSON.parse(localStorage.getItem("dailyProfits")) || [];
+    dailyProfits.push({
+      date: new Date().toLocaleDateString(),
+      profit: amount,
+    });
+    localStorage.setItem("dailyProfits", JSON.stringify(dailyProfits));
+  }, []);
+
+  const closeDay = useCallback(() => {
+    const todayProfit = JSON.parse(localStorage.getItem("today")) || 0;
+    addDailyProfit(todayProfit);
+    localStorage.setItem("today", JSON.stringify(0));
+    localStorage.setItem("todayClient", JSON.stringify(0));
+    updateStats();
+  }, [addDailyProfit, updateStats]);
+
+  const getMonthlyResults = useCallback(() => {
+    const dailyProfits = JSON.parse(localStorage.getItem("dailyProfits")) || [];
+    const monthlyResults = dailyProfits.reduce((acc, item) => {
+      const date = new Date(item.date);
+      const month = date.getMonth();
+      const year = date.getFullYear();
+      const key = `${year}-${month}`;
+      if (!acc[key]) {
+        acc[key] = {
+          profit: 0,
+          days: 0,
+        };
+      }
+      acc[key].profit += item.profit;
+      acc[key].days += 1;
+      return acc;
+    }, {});
+    return monthlyResults;
+  }, []);
+
+  return {
+    stats,
+    updateStats,
+    withdrawals,
+    updateWithdrawals,
+    closeDay,
+    getMonthlyResults,
+  };
 };
 
 export default useLocalStorage;

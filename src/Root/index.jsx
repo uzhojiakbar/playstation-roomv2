@@ -7,8 +7,16 @@ import Withdrawals from "../Components/Ayrish";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const Root = () => {
-  const { stats, updateStats, withdrawals, updateWithdrawals } =
-    useLocalStorage();
+  const {
+    stats,
+    updateStats,
+    withdrawals,
+    updateWithdrawals,
+    closeDay,
+    getMonthlyResults,
+  } = useLocalStorage();
+
+  const monthlyResults = getMonthlyResults();
 
   return (
     <div className="main">
@@ -22,6 +30,7 @@ const Root = () => {
           </div>
         </div>
       </div>
+      <button onClick={closeDay}>Kunni Yopish</button>
       <Controller onUpdateStats={updateStats} />
       <Rooms onUpdateStats={updateStats} />
       <Controller type={0} onUpdateStats={updateStats} />
@@ -29,6 +38,15 @@ const Root = () => {
         withdrawals={withdrawals}
         onUpdateWithdrawals={updateWithdrawals}
       />
+      <div>
+        <h3>Oylik Natijalar</h3>
+        {Object.entries(monthlyResults).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}</strong>: Foyda: {value.profit} so'm, Kunlar:{" "}
+            {value.days}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
