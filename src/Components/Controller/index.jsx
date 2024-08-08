@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CtrlDesign } from "./style";
 
-const Controller = ({ type, onUpdateStats }) => {
+const Controller = ({ type, updateWithdrawals }) => {
   const [price, setPrice] = useState({
     oddiy: localStorage.getItem("oddiy") || 12000,
     pro: localStorage.getItem("pro") || 15000,
@@ -44,8 +44,9 @@ const Controller = ({ type, onUpdateStats }) => {
     const existingWithdrawals =
       JSON.parse(localStorage.getItem("withdrawals")) || [];
     existingWithdrawals.push(newWithdrawal);
-    localStorage.setItem("withdrawals", JSON.stringify(existingWithdrawals));
+    // localStorage.setItem("withdrawals", JSON.stringify(existingWithdrawals));
 
+    updateWithdrawals(existingWithdrawals);
     setSumma("");
     setTavsiy("");
     onUpdateStats();

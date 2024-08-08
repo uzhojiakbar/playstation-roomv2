@@ -5,7 +5,6 @@ import Controller from "../Components/Controller";
 import useLocalStorage from "../hooks/useLocalStorage";
 import MonthlyResults from "../Components/MonthlyResults/MonthlyResults.jsx";
 import Withdrawals from "../Components/Ayrish/index.jsx";
-import { Room } from "../Components/Rooms/style.js";
 import RoomsController from "../Components/RoomsController/index.jsx";
 
 const Root = () => {
@@ -16,6 +15,9 @@ const Root = () => {
     updateWithdrawals,
     closeDay,
     getMonthlyResults,
+    setRooms,
+    rooms,
+    setGlobalRooms,
   } = useLocalStorage();
 
   const monthlyResults = getMonthlyResults();
@@ -33,19 +35,16 @@ const Root = () => {
         </div>
       </div>
       <Controller onUpdateStats={updateStats} />
-      <Rooms onUpdateStats={updateStats} />
-      <Controller type={0} onUpdateStats={updateStats} />
+      <Rooms rooms={rooms} setRooms={setRooms} onUpdateStats={updateStats} />
+      <Controller type={0} updateWithdrawals={updateWithdrawals} />
       <div className="center">
         <button className="bigButton" onClick={closeDay}>
           Kunni Yopish
         </button>
       </div>
-      <Withdrawals
-        withdrawals={withdrawals}
-        onUpdateWithdrawals={updateWithdrawals}
-      />
+      <Withdrawals withdrawals={withdrawals} />
       <MonthlyResults monthlyResults={monthlyResults} />
-      <RoomsController />
+      <RoomsController rooms={rooms} setGlobalRooms={setGlobalRooms} />
     </div>
   );
 };

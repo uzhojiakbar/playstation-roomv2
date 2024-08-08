@@ -10,6 +10,10 @@ const useLocalStorage = () => {
     JSON.parse(localStorage.getItem("withdrawals")) || []
   );
 
+  const [rooms, setRooms] = useState(
+    JSON.parse(localStorage.getItem("room")) || []
+  );
+
   useEffect(() => {
     const initializeData = () => {
       if (localStorage.getItem("oddiy") === null) {
@@ -115,9 +119,11 @@ const useLocalStorage = () => {
     });
   }, []);
 
-  const updateWithdrawals = useCallback(() => {
-    setWithdrawals(JSON.parse(localStorage.getItem("withdrawals")) || []);
-  }, []);
+  const updateWithdrawals = (data) => {
+    setWithdrawals(data || []);
+    // setWithdrawals(JSON.parse(localStorage.getItem("withdrawals")) || []);
+    localStorage.setItem("withdrawals", JSON.stringify(data));
+  };
 
   const addDailyProfit = useCallback((amount) => {
     const dailyProfits = JSON.parse(localStorage.getItem("dailyProfits")) || [];
@@ -156,10 +162,18 @@ const useLocalStorage = () => {
     return monthlyResults;
   }, []);
 
+  const setGlobalRooms = (room) => {
+    setRooms(room);
+    localStorage.setItem("room", JSON.stringify(room));
+  };
+
   return {
     stats,
     updateStats,
     withdrawals,
+    rooms,
+    setRooms,
+    setGlobalRooms,
     updateWithdrawals,
     closeDay,
     getMonthlyResults,

@@ -2,14 +2,10 @@
 import React, { useEffect } from "react";
 import { WithdrawalsCon, WithdrawalItem } from "./style";
 
-const Withdrawals = ({ withdrawals, onUpdateWithdrawals }) => {
-  useEffect(() => {
-    onUpdateWithdrawals();
-  }, []);
-
+const Withdrawals = ({ withdrawals = [] }) => {
   return (
     <WithdrawalsCon>
-      {withdrawals.map((withdrawal, index) => (
+      {withdrawals?.map((withdrawal, index) => (
         <WithdrawalItem key={index}>
           <div className="item">
             <div className="top">

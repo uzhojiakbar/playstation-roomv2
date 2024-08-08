@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Room, RoomsCon } from "../Rooms/style";
 
-const RoomsController = () => {
-  const [rooms, setRooms] = useState(
-    JSON.parse(localStorage.getItem("room")) || []
-  );
-
+const RoomsController = ({ rooms, setGlobalRooms }) => {
   const [setting, setSettings] = useState("");
+
+  const name = useRef("xona");
+  const type = useRef("oddiy");
 
   const handleRoomChange = (id, field, value) => {
     const updatedRooms = rooms.map((room) =>
       room.id === id ? { ...room, [field]: value } : room
     );
-    setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
+    setGlobalRooms(updatedRooms);
+    // localStorage.setItem("room", JSON.stringify(updatedRooms));
+  };
+
+  const onSave = (id) => {
+    const innerRooms = rooms?.map((room) => {
+      return room?.id === id
+        ? {
+            ...room,
+            name: name?.current?.value || "xona",
+            type: type?.current?.value || "oddiy",
+          }
+        : room;
+    });
+    setGlobalRooms(innerRooms);
+    setSettings("close");
   };
 
   return (
@@ -27,18 +40,20 @@ const RoomsController = () => {
                   <div>
                     <input
                       defaultValue={v.name}
-                      onChange={(e) => {
-                        handleRoomChange(v.id, "name", e.target.value);
-                      }}
+                      // onChange={(e) => {
+                      //   handleRoomChange(v.id, "name", e.target.value);
+                      // }}
+                      ref={name}
                       className="middle"
                       type="text"
                     />
                   </div>
                   <select
                     defaultValue={v.type}
-                    onChange={(e) => {
-                      handleRoomChange(v.id, "type", e.target.value);
-                    }}
+                    // onChange={(e) => {
+                    //   handleRoomChange(v.id, "type", e.target.value);
+                    // }}
+                    ref={type}
                   >
                     <option className="opt" value="oddiy">
                       oddiy
@@ -47,13 +62,7 @@ const RoomsController = () => {
                       pro
                     </option>
                   </select>
-                  <button
-                    onClick={() => {
-                      document.location.reload();
-                    }}
-                  >
-                    Saqlash
-                  </button>
+                  <button onClick={() => onSave(v.id)}>Saqlash</button>
                 </>
               ) : (
                 <>

@@ -2,10 +2,7 @@
 import React, { useState } from "react";
 import { Room, RoomsCon } from "./style";
 
-const Rooms = ({ onUpdateStats }) => {
-  const [rooms, setRooms] = useState(
-    JSON.parse(localStorage.getItem("room")) || []
-  );
+const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
   const [editingRoomId, setEditingRoomId] = useState(null);
   const [additionalCharge, setAdditionalCharge] = useState({});
 
@@ -14,7 +11,7 @@ const Rooms = ({ onUpdateStats }) => {
       room.id === id ? { ...room, [field]: value } : room
     );
     setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
+    // localStorage.setItem("room", JSON.stringify(updatedRooms));
   };
 
   const handleVIP = (id) => {
