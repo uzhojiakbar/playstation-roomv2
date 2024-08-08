@@ -170,7 +170,7 @@ const Rooms = ({ onUpdateStats }) => {
               <input
                 className="mini"
                 type="text"
-                value={room.close ? room.close[0] : ""}
+                defaultValue={room.close ? room.close[0] + room.close[1] : ""}
                 onChange={(e) =>
                   room.open &&
                   handleRoomChange(
@@ -185,7 +185,7 @@ const Rooms = ({ onUpdateStats }) => {
               <input
                 className="mini"
                 type="text"
-                value={room.close ? room.close[1] : ""}
+                defaultValue={room.close ? room.close[2] + room.close[3] : ""}
                 onChange={(e) =>
                   room.open &&
                   handleRoomChange(

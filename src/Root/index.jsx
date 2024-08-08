@@ -5,6 +5,8 @@ import Controller from "../Components/Controller";
 import useLocalStorage from "../hooks/useLocalStorage";
 import MonthlyResults from "../Components/MonthlyResults/MonthlyResults.jsx";
 import Withdrawals from "../Components/Ayrish/index.jsx";
+import { Room } from "../Components/Rooms/style.js";
+import RoomsController from "../Components/RoomsController/index.jsx";
 
 const Root = () => {
   const {
@@ -43,6 +45,7 @@ const Root = () => {
         onUpdateWithdrawals={updateWithdrawals}
       />
       <MonthlyResults monthlyResults={monthlyResults} />
+      <RoomsController />
     </div>
   );
 };
