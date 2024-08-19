@@ -69,10 +69,10 @@ const useLocalStorage = () => {
           },
           {
             id: 6,
-            name: "6-xona",
+            name: "TENNIS",
             open: false,
             close: false,
-            type: "oddiy",
+            type: "tennis",
             vip: false,
           },
           // {

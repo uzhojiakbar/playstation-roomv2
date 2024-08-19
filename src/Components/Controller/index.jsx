@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import { CtrlDesign } from "./style";
 
-const Controller = ({
-  width,
-  border,
-  type,
-  updateWithdrawals,
-  minusToday,
-  updateStats = () => {
-    console.log(1);
-  },
-}) => {
+const Controller = ({ width, border, type, updateWithdrawals, minusToday }) => {
   const [price, setPrice] = useState({
     oddiy: localStorage.getItem("oddiy") || 12000,
     pro: localStorage.getItem("pro") || 15000,
+    tennis: localStorage.getItem("tennis") || 15000,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [summa, setSumma] = useState("");
@@ -23,6 +15,7 @@ const Controller = ({
     if (!isEditing) {
       localStorage.setItem("oddiy", price.oddiy);
       localStorage.setItem("pro", price.pro);
+      localStorage.setItem("tennis", price.tennis);
     }
   }, [isEditing, price]);
 
@@ -103,6 +96,7 @@ const Controller = ({
             disabled={!isEditing}
             onChange={handleChange}
             placeholder="narx"
+            className="middle"
           />
         </div>
         <div className="box">
@@ -114,6 +108,19 @@ const Controller = ({
             disabled={!isEditing}
             onChange={handleChange}
             placeholder="narx"
+            className="middle"
+          />
+        </div>
+        <div className="box">
+          <div className="title">Tennis:</div>
+          <input
+            name="tennis"
+            value={price.tennis}
+            type="number"
+            disabled={!isEditing}
+            onChange={handleChange}
+            placeholder="narx"
+            className="middle"
           />
         </div>
         <div className="box">
