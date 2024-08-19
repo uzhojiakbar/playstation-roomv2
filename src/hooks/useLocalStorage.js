@@ -64,14 +64,14 @@ const useLocalStorage = () => {
             type: "oddiy",
             vip: false,
           },
-          // {
-          //   id: 6,
-          //   name: "6-xona",
-          //   open: false,
-          //   close: false,
-          //   type: "oddiy",
-          //   vip: false,
-          // },
+          {
+            id: 6,
+            name: "6-xona",
+            open: false,
+            close: false,
+            type: "oddiy",
+            vip: false,
+          },
           // {
           //   id: 7,
           //   name: "7-xona",

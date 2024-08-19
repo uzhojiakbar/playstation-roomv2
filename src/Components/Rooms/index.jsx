@@ -148,8 +148,8 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
     <RoomsCon>
       {rooms.map((room, index) => (
         <Room key={room.id} back={index}>
+          <div className="title center">{room.name}</div>
           <div>
-            <div className="title mini">{room.name}</div>
             <div>
               <input
                 className="middle"
@@ -159,7 +159,7 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
                     ? room.open.join(":")
                     : ""
                 }
-                placeholder="Ochilish vaqti"
+                placeholder="Ochilish"
                 disabled
               />
             </div>
@@ -198,7 +198,6 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
           </div>
 
           <div>
-            <div className="title mini">{calculatePrice(room).toFixed(2)}</div>
             <div>
               {room.open === false ? (
                 <button className="middle" onClick={() => handleVIP(room.id)}>
@@ -234,27 +233,14 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
           </div>
 
           <div>
-            <div className="title mini">{room.additionalCharge || "0.00"}</div>
-
-            <div>
-              {editingRoomId === room.id ? (
-                <input
-                  className="middle"
-                  type="number"
-                  value={additionalCharge[room.id] || ""}
-                  onChange={(e) =>
-                    handleAdditionalChargeChange(room.id, e.target.value)
-                  }
-                />
-              ) : (
-                <button
-                  className="middle"
-                  onClick={() => setEditingRoomId(room.id)}
-                >
-                  Sozlash
-                </button>
-              )}
-            </div>
+            <input
+              className="middle"
+              type="number"
+              value={additionalCharge[room.id] || ""}
+              onChange={(e) =>
+                handleAdditionalChargeChange(room.id, e.target.value)
+              }
+            />
 
             <div>
               <button
@@ -270,9 +256,28 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
                   editingRoomId !== room.id && room.additionalCharge <= 0
                 }
               >
-                {editingRoomId === room.id ? "Saqlash" : "Olmoq"}
+                Qo'shmoq
               </button>
             </div>
+          </div>
+          <div>
+            <div className="title ">{calculatePrice(room).toFixed(2)}</div>{" "}
+            <div className="title ">{room.additionalCharge || "0.00"}</div>
+          </div>
+          <div>
+            <button
+              className="bigButton"
+              onClick={() => {
+                if (editingRoomId === room.id) {
+                  handleSaveAdditionalCharge(room.id);
+                } else {
+                  handleObtainAdditionalCharge(room.id);
+                }
+              }}
+              disabled={editingRoomId !== room.id && room.additionalCharge <= 0}
+            >
+              Olmoq
+            </button>
           </div>
         </Room>
       ))}
