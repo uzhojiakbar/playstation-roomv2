@@ -18,6 +18,7 @@ const Root = () => {
     setRooms,
     rooms,
     setGlobalRooms,
+    minusToday,
   } = useLocalStorage();
 
   const monthlyResults = getMonthlyResults();
@@ -34,14 +35,31 @@ const Root = () => {
           </div>
         </div>
       </div>
-      <Controller onUpdateStats={updateStats} />
+      <div className="flex ">
+        <Controller
+          width="50%"
+          border={1}
+          type={0}
+          updateWithdrawals={updateWithdrawals}
+          updateStats={updateStats}
+          minusToday={minusToday}
+        />
+        <Controller
+          border={1}
+          width="50%"
+          updateStats={updateStats}
+          updateWithdrawals={updateWithdrawals}
+          minusToday={minusToday}
+        />
+      </div>
+
       <Rooms rooms={rooms} setRooms={setRooms} onUpdateStats={updateStats} />
-      <Controller type={0} updateWithdrawals={updateWithdrawals} />
       <div className="center">
         <button className="bigButton" onClick={closeDay}>
           Kunni Yopish
         </button>
       </div>
+
       <Withdrawals withdrawals={withdrawals} />
       <MonthlyResults monthlyResults={monthlyResults} />
       <RoomsController rooms={rooms} setGlobalRooms={setGlobalRooms} />

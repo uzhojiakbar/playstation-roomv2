@@ -2,11 +2,18 @@ import styled from "styled-components";
 
 export const RoomsCon = styled.div`
   display: flex;
-  width: 1200px;
+  justify-content: space-between;
+
+  width: 100%;
   overflow: scroll;
   margin: 0 auto;
-  padding: 20px 0;
-  gap: 20px;
+  padding: 0 0px;
+  margin: 10px 0;
+  gap: 5px;
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 25px;
+  }
 `;
 
 {
@@ -19,10 +26,9 @@ export const Room = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 200px;
+  width: 2500px;
   height: fit-content;
   gap: 30px;
-  padding: 5px 0px;
 
   /* background-color: ${({ back }) =>
     back % 2 === 0 ? "var(--back1)" : "var(--back2)"}; */

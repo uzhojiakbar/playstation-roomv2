@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { CtrlDesign } from "./style";
 
-const Controller = ({ type, updateWithdrawals }) => {
+const Controller = ({
+  width,
+  border,
+  type,
+  updateWithdrawals,
+  minusToday,
+  updateStats = () => {
+    console.log(1);
+  },
+}) => {
   const [price, setPrice] = useState({
     oddiy: localStorage.getItem("oddiy") || 12000,
     pro: localStorage.getItem("pro") || 15000,
@@ -25,12 +34,17 @@ const Controller = ({ type, updateWithdrawals }) => {
     }));
   };
 
-  const handleSummaChange = (e) => setSumma(e.target.value);
+  const handleSummaChange = (e) => setSumma(+e.target.value || 0);
   const handleTavsiyChange = (e) => setTavsiy(e.target.value);
 
   const handleAyrish = () => {
     if (!summa || isNaN(summa) || Number(summa) <= 0) {
       alert("Miqdorni to'g'ri kiriting!");
+      return;
+    }
+
+    if (tavsiy.length > 25) {
+      alert("Maximal 25 ta harf kiritish mumkin!");
       return;
     }
 
@@ -44,17 +58,16 @@ const Controller = ({ type, updateWithdrawals }) => {
     const existingWithdrawals =
       JSON.parse(localStorage.getItem("withdrawals")) || [];
     existingWithdrawals.push(newWithdrawal);
-    // localStorage.setItem("withdrawals", JSON.stringify(existingWithdrawals));
 
     updateWithdrawals(existingWithdrawals);
+    minusToday(summa);
     setSumma("");
     setTavsiy("");
-    onUpdateStats();
   };
 
   if (type === 0) {
     return (
-      <CtrlDesign>
+      <CtrlDesign width={width} className={`${border ? "border" : ""}`}>
         <div className="ctrl2">
           <div className="title centerText">Kunlik Foydadan Ayrish:</div>
           <div className="CtrlBox">
@@ -79,7 +92,7 @@ const Controller = ({ type, updateWithdrawals }) => {
   }
 
   return (
-    <CtrlDesign>
+    <CtrlDesign className={`${border ? "border" : ""}`} width={width}>
       <div className="CtrlBox">
         <div className="box">
           <div className="title">Oddiy Xona:</div>

@@ -22,6 +22,9 @@ const useLocalStorage = () => {
       if (localStorage.getItem("pro") === null) {
         localStorage.setItem("pro", 15000);
       }
+      if (localStorage.getItem("tennis") === null) {
+        localStorage.setItem("tennis", 15000);
+      }
       if (localStorage.getItem("room") === null) {
         const rooms = [
           {
@@ -106,18 +109,19 @@ const useLocalStorage = () => {
           // },
         ];
         localStorage.setItem("room", JSON.stringify(rooms));
+        document.location.reload();
       }
     };
 
     initializeData();
   }, []);
 
-  const updateStats = useCallback(() => {
+  const updateStats = () => {
     setStats({
       today: JSON.parse(localStorage.getItem("today")) || 0,
       todayClient: JSON.parse(localStorage.getItem("todayClient")) || 0,
     });
-  }, []);
+  };
 
   const updateWithdrawals = (data) => {
     setWithdrawals(data || []);
@@ -133,6 +137,16 @@ const useLocalStorage = () => {
     });
     localStorage.setItem("dailyProfits", JSON.stringify(dailyProfits));
   }, []);
+
+  const minusToday = (amount) => {
+    let innerstats = {
+      today: stats.today - amount,
+      todayClient: stats.todayClient,
+    };
+    localStorage.setItem("today", innerstats.today);
+    localStorage.setItem("todayClient", innerstats.todayClient);
+    setStats(innerstats);
+  };
 
   const closeDay = useCallback(() => {
     const todayProfit = JSON.parse(localStorage.getItem("today")) || 0;
@@ -177,6 +191,7 @@ const useLocalStorage = () => {
     updateWithdrawals,
     closeDay,
     getMonthlyResults,
+    minusToday,
   };
 };
 

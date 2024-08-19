@@ -147,7 +147,7 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
   return (
     <RoomsCon>
       {rooms.map((room, index) => (
-        <Room key={room.id} back={index}>
+        <Room className="border" key={room.id} back={index}>
           <div className="title center">{room.name}</div>
           <div>
             <div>
