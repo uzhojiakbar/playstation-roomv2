@@ -116,6 +116,11 @@ const useLocalStorage = () => {
     initializeData();
   }, []);
 
+  const UpdateRooms = (room) => {
+    setRooms(room);
+    localStorage.setItem("room", JSON.stringify(room));
+  };
+
   const updateStats = () => {
     setStats({
       today: JSON.parse(localStorage.getItem("today")) || 0,
@@ -192,6 +197,7 @@ const useLocalStorage = () => {
     closeDay,
     getMonthlyResults,
     minusToday,
+    UpdateRooms,
   };
 };
 

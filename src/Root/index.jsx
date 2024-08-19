@@ -19,6 +19,7 @@ const Root = () => {
     rooms,
     setGlobalRooms,
     minusToday,
+    UpdateRooms,
   } = useLocalStorage();
 
   const monthlyResults = getMonthlyResults();
@@ -53,7 +54,12 @@ const Root = () => {
         />
       </div>
 
-      <Rooms rooms={rooms} setRooms={setRooms} onUpdateStats={updateStats} />
+      <Rooms
+        rooms={rooms}
+        setRooms={setRooms}
+        UpdateRooms={UpdateRooms}
+        onUpdateStats={updateStats}
+      />
       <div className="center">
         <button className="bigButton" onClick={closeDay}>
           Kunni Yopish

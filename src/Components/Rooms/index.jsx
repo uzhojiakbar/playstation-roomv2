@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Room, RoomsCon } from "./style";
 
-const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
+const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
   const [editingRoomId, setEditingRoomId] = useState(null);
   const [additionalCharge, setAdditionalCharge] = useState({});
 
@@ -10,7 +10,17 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
     const updatedRooms = rooms.map((room) =>
       room.id === id ? { ...room, [field]: value } : room
     );
-    setRooms(updatedRooms);
+    console.log(updatedRooms);
+    UpdateRooms(updatedRooms);
+    // localStorage.setItem("room", JSON.stringify(updatedRooms));
+  };
+
+  const handleCloseChange = (id, value) => {
+    const updatedRooms = rooms.map((room) =>
+      room.id === id ? { ...room, close: value } : room
+    );
+    console.log(updatedRooms);
+    UpdateRooms(updatedRooms);
     // localStorage.setItem("room", JSON.stringify(updatedRooms));
   };
 
@@ -20,7 +30,7 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
     const updatedRooms = rooms.map((room) =>
       room.id === id ? { ...room, open: [currentHour, currentMinute] } : room
     );
-    setRooms(updatedRooms);
+    UpdateRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
     onUpdateStats();
   };
@@ -31,7 +41,7 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
     const updatedRooms = rooms.map((room) =>
       room.id === id ? { ...room, close: [currentHour, currentMinute] } : room
     );
-    setRooms(updatedRooms);
+    UpdateRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
   };
 
@@ -97,14 +107,19 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
 
   const calculatePrice = (room) => {
     if (!room.open || !room.close) return 0;
-    const openTime = new Date();
-    openTime.setHours(room.open[0], room.open[1]);
-    const closeTime = new Date();
-    closeTime.setHours(room.close[0], room.close[1]);
-    const diffInMinutes = (closeTime - openTime) / 60000;
-    const diffInHours = diffInMinutes / 60;
-    const pricePerHour = parseFloat(localStorage.getItem(room.type)) || 0;
-    return diffInHours * pricePerHour;
+
+    let hour = (room.close[0] - room.open[0]) * 60;
+
+    if (room.open[0] > room.close[0]) {
+      hour = (24 - room.open[0]) * 60 + room.close[0] * 60;
+    }
+
+    let minute = room.close[1] - room.open[1];
+
+    return (
+      (Number(hour) + Number(minute)) *
+      (parseFloat(localStorage.getItem(room.type)) / 60)
+    );
   };
 
   const handleAdditionalChargeChange = (id, value) => {
@@ -167,14 +182,13 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
               <input
                 className="mini"
                 type="text"
-                defaultValue={room.close ? room.close[0] + room.close[1] : ""}
+                defaultValue={room.close ? room.close[0] : ""}
                 onChange={(e) =>
                   room.open &&
-                  handleRoomChange(
-                    room.id,
-                    "close",
-                    `${e.target.value}:${room.close ? room.close[1] : "00"}`
-                  )
+                  handleCloseChange(room.id, [
+                    +e.target.value || "00",
+                    +room.close[1],
+                  ])
                 }
                 placeholder="Soat"
                 disabled={!room.open}
@@ -182,14 +196,13 @@ const Rooms = ({ onUpdateStats, rooms, setRooms }) => {
               <input
                 className="mini"
                 type="text"
-                defaultValue={room.close ? room.close[2] + room.close[3] : ""}
+                defaultValue={room.close ? room.close[1] : ""}
                 onChange={(e) =>
                   room.open &&
-                  handleRoomChange(
-                    room.id,
-                    "close",
-                    `${room.close ? room.close[0] : "00"}:${e.target.value}`
-                  )
+                  handleCloseChange(room.id, [
+                    +room.close[0],
+                    +e.target.value || "00",
+                  ])
                 }
                 placeholder="Minut"
                 disabled={!room.open}

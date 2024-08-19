@@ -26,7 +26,9 @@ export const Room = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 2500px;
+  width: 300px;
+  padding: 20px 10px;
+  border-radius: 20px;
   height: fit-content;
   gap: 30px;
 
