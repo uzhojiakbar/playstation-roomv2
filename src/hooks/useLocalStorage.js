@@ -64,6 +64,46 @@ const useLocalStorage = () => {
             type: "oddiy",
             vip: false,
           },
+          // {
+          //   id: 6,
+          //   name: "6-xona",
+          //   open: false,
+          //   close: false,
+          //   type: "oddiy",
+          //   vip: false,
+          // },
+          // {
+          //   id: 7,
+          //   name: "7-xona",
+          //   open: false,
+          //   close: false,
+          //   type: "oddiy",
+          //   vip: false,
+          // },
+          // {
+          //   id: 8,
+          //   name: "8-xona",
+          //   open: false,
+          //   close: false,
+          //   type: "pro",
+          //   vip: false,
+          // },
+          // {
+          //   id: 9,
+          //   name: "9-xona",
+          //   open: false,
+          //   close: false,
+          //   type: "oddiy",
+          //   vip: false,
+          // },
+          // {
+          //   id: 10,
+          //   name: "10-xona",
+          //   open: false,
+          //   close: false,
+          //   type: "oddiy",
+          //   vip: false,
+          // },
         ];
         localStorage.setItem("room", JSON.stringify(rooms));
       }
