@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
 export const RoomsCon = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 320px);
+  flex-wrap: wrap;
   justify-content: space-between;
+  overflow: scroll;
 
   width: 100%;
-  overflow: scroll;
-  margin: 0 auto;
   padding: 0 0px;
-  margin: 10px 0;
-  gap: 5px;
+  margin: 10px auto;
+  gap: 20px;
   &::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 25px;
@@ -26,7 +27,6 @@ export const Room = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 300px;
   padding: 20px 10px;
   border-radius: 20px;
   height: fit-content;

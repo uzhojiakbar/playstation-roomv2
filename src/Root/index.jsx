@@ -26,29 +26,28 @@ const Root = () => {
 
   return (
     <div className="main">
-      <div className="center">
-        <div className="title">
-          <div>
-            Kunlik Foyda: <u>{stats.today} som</u>
-          </div>
-          <div>
-            Bugun Klientlar: <u>{stats.todayClient} ta</u>
-          </div>
+      <div className="title center">
+        <div>
+          Kunlik Foyda: <u>{stats.today} som</u>
         </div>
+        <div>
+          Bugun Klientlar: <u>{stats.todayClient} ta</u>
+        </div>
+        <button className="middleBig" onClick={closeDay}>
+          Kunni Yopish
+        </button>
       </div>
       <div className="flex ">
         <Controller
-          width="50%"
-          border={1}
           type={0}
+          width="48%"
+          border={1}
           updateWithdrawals={updateWithdrawals}
-          updateStats={updateStats}
           minusToday={minusToday}
         />
         <Controller
+          width="48%"
           border={1}
-          width="50%"
-          updateStats={updateStats}
           updateWithdrawals={updateWithdrawals}
           minusToday={minusToday}
         />
@@ -58,13 +57,8 @@ const Root = () => {
         rooms={rooms}
         setRooms={setRooms}
         UpdateRooms={UpdateRooms}
-        onUpdateStats={updateStats}
+        updateStats={updateStats}
       />
-      <div className="center">
-        <button className="bigButton" onClick={closeDay}>
-          Kunni Yopish
-        </button>
-      </div>
 
       <Withdrawals withdrawals={withdrawals} />
       <MonthlyResults monthlyResults={monthlyResults} />

@@ -34,6 +34,12 @@ const useLocalStorage = () => {
             close: false,
             type: "oddiy",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           {
             id: 2,
@@ -42,6 +48,12 @@ const useLocalStorage = () => {
             close: false,
             type: "oddiy",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           {
             id: 3,
@@ -50,6 +62,12 @@ const useLocalStorage = () => {
             close: false,
             type: "pro",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           {
             id: 4,
@@ -58,6 +76,12 @@ const useLocalStorage = () => {
             close: false,
             type: "oddiy",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           {
             id: 5,
@@ -66,6 +90,12 @@ const useLocalStorage = () => {
             close: false,
             type: "oddiy",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           {
             id: 6,
@@ -74,6 +104,12 @@ const useLocalStorage = () => {
             close: false,
             type: "tennis",
             vip: false,
+            holat: "open",
+            budget: {
+              room: 0,
+              oth: 0,
+              full: 0,
+            },
           },
           // {
           //   id: 7,
@@ -117,8 +153,8 @@ const useLocalStorage = () => {
   }, []);
 
   const UpdateRooms = (room) => {
-    setRooms(room);
     localStorage.setItem("room", JSON.stringify(room));
+    setRooms(room);
   };
 
   const updateStats = () => {

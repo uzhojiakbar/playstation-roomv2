@@ -2,18 +2,9 @@
 import React, { useState } from "react";
 import { Room, RoomsCon } from "./style";
 
-const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
+const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
   const [editingRoomId, setEditingRoomId] = useState(null);
   const [additionalCharge, setAdditionalCharge] = useState({});
-
-  const handleRoomChange = (id, field, value) => {
-    const updatedRooms = rooms.map((room) =>
-      room.id === id ? { ...room, [field]: value } : room
-    );
-    console.log(updatedRooms);
-    UpdateRooms(updatedRooms);
-    // localStorage.setItem("room", JSON.stringify(updatedRooms));
-  };
 
   const handleCloseChange = (id, value) => {
     const updatedRooms = rooms.map((room) =>
@@ -28,42 +19,37 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
     const updatedRooms = rooms.map((room) =>
-      room.id === id ? { ...room, open: [currentHour, currentMinute] } : room
+      room.id === id
+        ? { ...room, open: [currentHour, currentMinute], holat: "close" }
+        : room
     );
     UpdateRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
-    onUpdateStats();
+    updateStats();
   };
 
-  const handleClose = (id) => {
+  const handleClose = (id, h, m) => {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
     const updatedRooms = rooms.map((room) =>
-      room.id === id ? { ...room, close: [currentHour, currentMinute] } : room
+      room.id === id
+        ? {
+            ...room,
+            close: [
+              room.close[0] ? room.close[0] : currentHour,
+              room.close[1] ? room.close[1] : currentMinute,
+            ],
+            holat: "get",
+          }
+        : room
     );
     UpdateRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
+    updateStats();
   };
 
   const handlePayment = (id) => {
     const updatedRooms = rooms.map((room) => {
       if (room.id === id) {
-        if (!room.open || !room.close) {
-          console.error("Room open or close time is missing.");
-          return room;
-        }
-
-        const openTime = new Date();
-        openTime.setHours(room.open[0], room.open[1], 0, 0);
-
-        const closeTime = new Date();
-        closeTime.setHours(room.close[0], room.close[1], 0, 0);
-
-        const diffInMinutes = (closeTime - openTime) / 60000;
-        const diffInHours = diffInMinutes / 60;
-
-        const pricePerHour = parseFloat(localStorage.getItem(room.type)) || 0;
-        const totalPrice = diffInHours * pricePerHour;
+        const totalPrice = calculatePrice(room);
 
         const today = JSON.parse(localStorage.getItem("today")) || 0;
         localStorage.setItem("today", JSON.stringify(today + totalPrice));
@@ -71,16 +57,14 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
         const todayClient =
           JSON.parse(localStorage.getItem("todayClient")) || 0;
         localStorage.setItem("todayClient", JSON.stringify(todayClient + 1));
-
-        onUpdateStats();
-
-        return { ...room, open: false, close: false };
+        updateStats();
+        return { ...room, open: false, close: false, holat: "open" };
       }
+      updateStats();
       return room;
     });
 
-    setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
+    UpdateRooms(updatedRooms);
   };
 
   const handleTimeAddition = (id, minutesToAdd) => {
@@ -96,18 +80,16 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
         return {
           ...room,
           close: [openTime.getHours(), openTime.getMinutes()],
+          holat: "get",
         };
       }
       return room;
     });
-    setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
-    onUpdateStats();
+    UpdateRooms(updatedRooms);
+    updateStats();
   };
 
   const calculatePrice = (room) => {
-    if (!room.open || !room.close) return 0;
-
     let hour = (room.close[0] - room.open[0]) * 60;
 
     if (room.open[0] > room.close[0]) {
@@ -139,7 +121,7 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
     setRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
     setEditingRoomId(null);
-    onUpdateStats();
+    updateStats();
   };
 
   const handleObtainAdditionalCharge = (id) => {
@@ -156,108 +138,142 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
 
     setRooms(updatedRooms);
     localStorage.setItem("room", JSON.stringify(updatedRooms));
-    onUpdateStats();
+    updateStats();
   };
 
   return (
     <RoomsCon>
-      {rooms.map((room, index) => (
-        <Room className="border" key={room.id} back={index}>
-          <div className="title center">{room.name}</div>
-          <div>
+      {rooms.map((room, index) => {
+        console.log("update");
+        return (
+          <Room className="border" key={room.id} back={index}>
+            <div className="title center">{room.name}</div>
+            <div>
+              <div>
+                <input
+                  className="middle"
+                  type="text"
+                  value={
+                    room.open && Array.isArray(room.open)
+                      ? room.open.join(":")
+                      : ""
+                  }
+                  placeholder="Ochilish"
+                  disabled
+                />
+              </div>
+              <div>
+                <input
+                  className="mini"
+                  type="text"
+                  value={room.close ? room.close[0] : ""}
+                  onChange={(e) =>
+                    room.open &&
+                    handleCloseChange(room.id, [
+                      +e.target.value || "00",
+                      +room.close[1] || "00",
+                    ])
+                  }
+                  placeholder="Soat"
+                  disabled={room.holat === "get" || !room.open}
+                />
+                <input
+                  className="mini"
+                  type="text"
+                  value={room.close ? room.close[1] : ""}
+                  onChange={(e) =>
+                    room.open &&
+                    handleCloseChange(room.id, [
+                      +room.close[0] || "00",
+                      +e.target.value || "00",
+                    ])
+                  }
+                  placeholder="Minut"
+                  disabled={room.holat === "get" || !room.open}
+                />
+              </div>
+            </div>
+
+            <div>
+              <div>
+                {room.holat === "open" ? (
+                  <button className="middle" onClick={() => handleVIP(room.id)}>
+                    VIP
+                  </button>
+                ) : room.holat === "get" ? (
+                  <button
+                    className="middle"
+                    onClick={() => handlePayment(room.id)}
+                  >
+                    Olish
+                  </button>
+                ) : room.holat === "openMinute" ? (
+                  <button
+                    className="middle"
+                    onClick={() => handleClose(room.id)}
+                  >
+                    Yopish
+                  </button>
+                ) : (
+                  <button
+                    className="middle"
+                    onClick={() => handleClose(room.id)}
+                  >
+                    Yopish
+                  </button>
+                )}
+              </div>
+              <div>
+                <button
+                  className="mini"
+                  onClick={() => handleTimeAddition(room.id, 30)}
+                >
+                  +30
+                </button>
+                <button
+                  className="mini"
+                  onClick={() => handleTimeAddition(room.id, 60)}
+                >
+                  +60
+                </button>
+              </div>
+            </div>
+
             <div>
               <input
                 className="middle"
-                type="text"
-                value={
-                  room.open && Array.isArray(room.open)
-                    ? room.open.join(":")
-                    : ""
-                }
-                placeholder="Ochilish"
-                disabled
-              />
-            </div>
-            <div>
-              <input
-                className="mini"
-                type="text"
-                defaultValue={room.close ? room.close[0] : ""}
+                type="number"
+                value={additionalCharge[room.id] || ""}
                 onChange={(e) =>
-                  room.open &&
-                  handleCloseChange(room.id, [
-                    +e.target.value || "00",
-                    +room.close[1],
-                  ])
+                  handleAdditionalChargeChange(room.id, e.target.value)
                 }
-                placeholder="Soat"
-                disabled={!room.open}
               />
-              <input
-                className="mini"
-                type="text"
-                defaultValue={room.close ? room.close[1] : ""}
-                onChange={(e) =>
-                  room.open &&
-                  handleCloseChange(room.id, [
-                    +room.close[0],
-                    +e.target.value || "00",
-                  ])
-                }
-                placeholder="Minut"
-                disabled={!room.open}
-              />
-            </div>
-          </div>
 
-          <div>
-            <div>
-              {room.open === false ? (
-                <button className="middle" onClick={() => handleVIP(room.id)}>
-                  VIP
-                </button>
-              ) : room.close ? (
+              <div>
                 <button
-                  className="middle"
-                  onClick={() => handlePayment(room.id)}
+                  className="middleBig"
+                  onClick={() => {
+                    if (editingRoomId === room.id) {
+                      handleSaveAdditionalCharge(room.id);
+                    } else {
+                      handleObtainAdditionalCharge(room.id);
+                    }
+                  }}
+                  disabled={
+                    editingRoomId !== room.id && room.additionalCharge <= 0
+                  }
                 >
-                  Olish
+                  Qo'shmoq
                 </button>
-              ) : (
-                <button className="middle" onClick={() => handleClose(room.id)}>
-                  Yopish
-                </button>
-              )}
+              </div>
+            </div>
+            <div>
+              <div className="title ">{calculatePrice(room).toFixed(2)}</div>{" "}
+              <div className="title ">{room.additionalCharge || "0.00"}</div>
             </div>
             <div>
               <button
-                className="mini"
-                onClick={() => handleTimeAddition(room.id, 30)}
-              >
-                +30
-              </button>
-              <button
-                className="mini"
-                onClick={() => handleTimeAddition(room.id, 60)}
-              >
-                +60
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <input
-              className="middle"
-              type="number"
-              value={additionalCharge[room.id] || ""}
-              onChange={(e) =>
-                handleAdditionalChargeChange(room.id, e.target.value)
-              }
-            />
-
-            <div>
-              <button
-                className="middleBig"
+                className="bigButton"
                 onClick={() => {
                   if (editingRoomId === room.id) {
                     handleSaveAdditionalCharge(room.id);
@@ -269,31 +285,12 @@ const Rooms = ({ onUpdateStats, rooms, setRooms, UpdateRooms }) => {
                   editingRoomId !== room.id && room.additionalCharge <= 0
                 }
               >
-                Qo'shmoq
+                Olmoq
               </button>
             </div>
-          </div>
-          <div>
-            <div className="title ">{calculatePrice(room).toFixed(2)}</div>{" "}
-            <div className="title ">{room.additionalCharge || "0.00"}</div>
-          </div>
-          <div>
-            <button
-              className="bigButton"
-              onClick={() => {
-                if (editingRoomId === room.id) {
-                  handleSaveAdditionalCharge(room.id);
-                } else {
-                  handleObtainAdditionalCharge(room.id);
-                }
-              }}
-              disabled={editingRoomId !== room.id && room.additionalCharge <= 0}
-            >
-              Olmoq
-            </button>
-          </div>
-        </Room>
-      ))}
+          </Room>
+        );
+      })}
     </RoomsCon>
   );
 };

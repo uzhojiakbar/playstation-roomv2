@@ -61,6 +61,9 @@ const RoomsController = ({ rooms, setGlobalRooms }) => {
                     <option className="opt" value="pro">
                       pro
                     </option>
+                    <option className="opt" value="tennis">
+                      tennis
+                    </option>
                   </select>
                   <button onClick={() => onSave(v.id)}>Saqlash</button>
                 </>
