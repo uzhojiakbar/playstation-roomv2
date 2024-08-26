@@ -46,11 +46,39 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
     updateStats();
   };
 
-  const handlePayment = (id) => {
+  const BudgetAdd = (id) => {
+    if (!id) {
+      alert("XATOLIK, pulini olib bolmaydi");
+      return false;
+    }
+
     const updatedRooms = rooms.map((room) => {
       if (room.id === id) {
         const totalPrice = calculatePrice(room);
 
+        return {
+          ...room,
+          open: false,
+          close: false,
+          holat: "open",
+          budget: {
+            ...room.budget,
+            room: (room.budget.room += totalPrice),
+            full: room.budget.room + room.budget.oth,
+          },
+        };
+      }
+
+      updateStats();
+      return room;
+    });
+    UpdateRooms(updatedRooms);
+  };
+
+  const handlePayment = (id) => {
+    const updatedRooms = rooms.map((room) => {
+      if (room.id === id) {
+        const totalPrice = +room.budget.full;
         const today = JSON.parse(localStorage.getItem("today")) || 0;
         localStorage.setItem("today", JSON.stringify(today + totalPrice));
 
@@ -58,7 +86,7 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
           JSON.parse(localStorage.getItem("todayClient")) || 0;
         localStorage.setItem("todayClient", JSON.stringify(todayClient + 1));
         updateStats();
-        return { ...room, open: false, close: false, holat: "open" };
+        return { ...room, budget: { oth: 0, full: 0, room: 0 } };
       }
       updateStats();
       return room;
@@ -114,31 +142,25 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
   const handleSaveAdditionalCharge = (id) => {
     const updatedRooms = rooms.map((room) => {
       if (room.id === id) {
-        return { ...room, additionalCharge: additionalCharge[id] || 0 };
+        return {
+          ...room,
+          budget: {
+            ...room.budget,
+            oth: +room.budget.oth + +additionalCharge[id] || 0,
+            full:
+              room.budget.room + +room.budget.oth + +additionalCharge[id] || 0,
+          },
+        };
       }
+      setAdditionalCharge({ ...additionalCharge, [id]: 0 });
+      updateStats();
       return room;
     });
-    setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
-    setEditingRoomId(null);
+    console.log(updatedRooms);
+    // setRooms(updatedRooms);
+    // localStorage.setItem("room", JSON.stringify(updatedRooms));
     updateStats();
-  };
-
-  const handleObtainAdditionalCharge = (id) => {
-    const updatedRooms = rooms.map((room) => {
-      if (room.id === id) {
-        const totalPrice =
-          +calculatePrice(room) + (+room.additionalCharge || 0);
-        const today = JSON.parse(localStorage.getItem("today")) || 0;
-        localStorage.setItem("today", JSON.stringify(+today + +totalPrice));
-        return { ...room, open: false, close: false, additionalCharge: 0 };
-      }
-      return room;
-    });
-
-    setRooms(updatedRooms);
-    localStorage.setItem("room", JSON.stringify(updatedRooms));
-    updateStats();
+    UpdateRooms(updatedRooms);
   };
 
   return (
@@ -203,7 +225,7 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
                 ) : room.holat === "get" ? (
                   <button
                     className="middle"
-                    onClick={() => handlePayment(room.id)}
+                    onClick={() => BudgetAdd(room.id, "room")}
                   >
                     Olish
                   </button>
@@ -253,37 +275,25 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
                 <button
                   className="middleBig"
                   onClick={() => {
-                    if (editingRoomId === room.id) {
-                      handleSaveAdditionalCharge(room.id);
-                    } else {
-                      handleObtainAdditionalCharge(room.id);
-                    }
+                    handleSaveAdditionalCharge(room.id);
                   }}
-                  disabled={
-                    editingRoomId !== room.id && room.additionalCharge <= 0
-                  }
                 >
                   Qo'shmoq
                 </button>
               </div>
             </div>
             <div>
-              <div className="title ">{calculatePrice(room).toFixed(2)}</div>{" "}
-              <div className="title ">{room.additionalCharge || "0.00"}</div>
+              <div className="title">
+                {room.budget.room || calculatePrice(room) || "0.00"}
+              </div>{" "}
+              <div className="title ">{room.budget.oth || "0.00"}</div>{" "}
+              <div className="title ">{room.budget.full || "0.00"}</div>
             </div>
+
             <div>
               <button
                 className="bigButton"
-                onClick={() => {
-                  if (editingRoomId === room.id) {
-                    handleSaveAdditionalCharge(room.id);
-                  } else {
-                    handleObtainAdditionalCharge(room.id);
-                  }
-                }}
-                disabled={
-                  editingRoomId !== room.id && room.additionalCharge <= 0
-                }
+                onClick={() => handlePayment(room.id)}
               >
                 Olmoq
               </button>

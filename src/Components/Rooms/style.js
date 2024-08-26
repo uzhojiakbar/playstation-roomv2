@@ -4,12 +4,12 @@ export const RoomsCon = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 320px);
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   overflow: scroll;
 
   width: 100%;
   padding: 0 0px;
-  margin: 10px auto;
+  margin: 50px auto;
   gap: 20px;
   &::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.6);

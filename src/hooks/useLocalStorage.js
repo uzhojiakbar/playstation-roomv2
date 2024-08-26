@@ -6,6 +6,7 @@ const useLocalStorage = () => {
     today: JSON.parse(localStorage.getItem("today")) || 0,
     todayClient: JSON.parse(localStorage.getItem("todayClient")) || 0,
   });
+
   const [withdrawals, setWithdrawals] = useState(
     JSON.parse(localStorage.getItem("withdrawals")) || []
   );
