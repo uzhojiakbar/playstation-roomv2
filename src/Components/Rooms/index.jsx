@@ -264,6 +264,7 @@ const Rooms = ({ updateStats, UpdateRooms, rooms, setRooms }) => {
             <div>
               <input
                 className="middle"
+                placeholder="summa"
                 type="number"
                 value={additionalCharge[room.id] || ""}
                 onChange={(e) =>

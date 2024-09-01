@@ -3,7 +3,7 @@ import React from "react";
 const MonthlyResults = ({ monthlyResults }) => {
   return (
     <div className="results">
-      <h3>Oylik Natijalar</h3>
+      <h3 className="oylikNatijaTitle">Oylik Natijalar</h3>
       <ul>
         {Object.entries(monthlyResults).map(([key, value]) => (
           <li key={key}>

@@ -3,16 +3,30 @@
   padding: 0;
   box-sizing: border-box;
 
-  color: white;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 :root {
-  --back1: #212121;
+  --global-back: #fff;
+  --back1: #fff;
   --back2: #474545;
+
+  --text-color: black;
+  --border-color: #474545;
+
+  --input-back: #fff;
+  --input-ps-color: gray;
+  --input-back-disabled: #444040;
+  --input-back-dis: #f8f4f4;
+
+  --button-bg: white;
+  --button-hover-bg: rgb(231, 226, 226);
+  --button-active-bg: rgb(222, 211, 211);
+
+  --scrolbar-thumb: black;
 }
 body {
-  background-color: #212121;
+  background-color: var(--global-back);
   padding: 2px;
 }
 
@@ -22,12 +36,12 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.486);
+  background-color: var(--scrolbar-thumb);
   border-radius: 25px;
 }
 
 *::selection {
-  background-color: #4400fd;
+  background-color: #0b0b0b;
   color: white;
 }
 
@@ -41,7 +55,7 @@ body {
 
 .center {
   width: 100%;
-  color: white;
+  color: var(--text-color);
   font-size: 24px;
   text-align: center;
   padding: 10px 0;
@@ -73,7 +87,7 @@ body {
 }
 
 .border {
-  border: 1px solid var(--back2);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
 }
 
@@ -81,7 +95,8 @@ body {
 
 input {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  border: 1px solid var(--input-back-disabled);
 
   border-radius: 10px;
   padding: 5px 8px;
@@ -89,11 +104,25 @@ input {
   width: 100px;
 
   outline: none;
+  color: var(--text-color);
+}
+
+input:disabled {
+  border: 1px solid var(--input-back-disabled);
+  background-color: var(--input-back-dis);
+}
+
+input:focus {
+  border: 1px solid var(--border-color);
+}
+
+input::placeholder {
+  color: var(--input-ps-color);
 }
 
 select {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--input-back-disabled);
 
   border-radius: 10px;
   padding: 5px 8px;
@@ -103,12 +132,18 @@ select {
   outline: none;
 }
 
+option {
+  padding: 15px 200px;
+  outline: none;
+  border: 1px solid var(--input-back-disabled);
+}
+
 .opt {
   background-color: var(--back1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--input-back);
 
   border-radius: 10px;
-  padding: 5px 8px;
+  padding: 20px 8px;
   height: 35px;
   width: 100px;
 
@@ -128,19 +163,11 @@ select {
   width: 80px;
 }
 
-input:disabled {
-  background-color: var(--back2);
-}
-
-input:focus {
-  border: 1px solid white;
-}
-
 /* BUTTON */
 
 button {
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
+  background-color: var(--button-bg);
 
   border-radius: 10px;
   padding: 10px 15px;
@@ -151,11 +178,11 @@ button {
 }
 
 button:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--button-hover-bg);
 }
 
 button:active {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--button-active-bg);
 }
 
 .middleBig {
@@ -171,10 +198,20 @@ button:active {
 /* Withdrawals and MonthlyResults common styles */
 .results {
   margin: 20px 0;
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 25px 15px;
+  border: 1px solid var(--input-back-disabled);
   border-radius: 10px;
-  background-color: var(--back2);
+  background-color: var(--global-back);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oylikNatijaTitle {
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--input-back-disabled);
+  border-radius: 20%;
 }
 
 .results h3 {

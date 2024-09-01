@@ -2,17 +2,17 @@ import styled from "styled-components";
 
 export const RoomsCon = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 320px);
+  grid-template-columns: repeat(3, 300px);
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   overflow: scroll;
 
   width: 100%;
   padding: 0 0px;
   margin: 50px auto;
-  gap: 20px;
+  gap: 40px;
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--scrolbar-thumb);
     border-radius: 25px;
   }
 `;
